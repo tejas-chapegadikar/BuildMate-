@@ -38,38 +38,38 @@ export default async function MePage() {
   const myApplications = (sentRaw ?? []) as unknown as MyApplication[];
 
   return (
-    <div className="mx-auto w-full max-w-2xl flex-1 px-6 py-10">
-      <h1 className="text-lg font-semibold">
+    <div className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
+      <h1 className="text-2xl font-semibold tracking-tight">
         {profile?.name ?? profile?.github_username ?? "You"}
       </h1>
 
-      <section className="mt-6">
-        <h2 className="text-sm font-semibold text-neutral-500">Contact info</h2>
-        <p className="mt-1 mb-3 text-xs text-neutral-400">
+      <section className="mt-8">
+        <h2 className="text-sm font-semibold text-[var(--text-dim)]">Contact info</h2>
+        <p className="mt-1 mb-3 text-xs text-[var(--text-faint)]">
           Shown only to people whose application you accept, or who accept yours.
         </p>
         <ContactForm initialContact={profile?.contact ?? null} />
       </section>
 
-      <section className="mt-10">
+      <section className="mt-12">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-neutral-500">Your posts</h2>
-          <Link href="/posts/new" className="text-xs underline">
+          <h2 className="text-sm font-semibold text-[var(--text-dim)]">Your posts</h2>
+          <Link href="/posts/new" className="text-xs gradient-text font-medium">
             + New post
           </Link>
         </div>
         {!myPosts || myPosts.length === 0 ? (
-          <p className="text-sm text-neutral-500">You haven&apos;t posted a project yet.</p>
+          <p className="text-sm text-[var(--text-dim)]">You haven&apos;t posted a project yet.</p>
         ) : (
           <ul className="space-y-2">
             {myPosts.map((post) => (
               <li key={post.id}>
                 <Link
                   href={`/posts/${post.id}`}
-                  className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2 text-sm hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
+                  className="card interactive flex items-center justify-between px-4 py-3 text-sm"
                 >
                   <span>{post.title}</span>
-                  <span className="text-xs text-neutral-400 capitalize">{post.status}</span>
+                  <span className="chip capitalize">{post.status}</span>
                 </Link>
               </li>
             ))}
@@ -77,14 +77,14 @@ export default async function MePage() {
         )}
       </section>
 
-      <section className="mt-10">
-        <h2 className="mb-3 text-sm font-semibold text-neutral-500">
+      <section className="mt-12">
+        <h2 className="mb-3 text-sm font-semibold text-[var(--text-dim)]">
           Projects you&apos;ve applied to
         </h2>
         {myApplications.length === 0 ? (
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[var(--text-dim)]">
             No applications yet — go{" "}
-            <Link href="/browse" className="underline">
+            <Link href="/browse" className="gradient-text font-medium">
               browse open projects
             </Link>
             .
@@ -96,10 +96,10 @@ export default async function MePage() {
                 <li key={app.id}>
                   <Link
                     href={`/posts/${app.post.id}`}
-                    className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2 text-sm hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
+                    className="card interactive flex items-center justify-between px-4 py-3 text-sm"
                   >
                     <span>{app.post.title}</span>
-                    <span className="text-xs text-neutral-400 capitalize">{app.status}</span>
+                    <span className="chip capitalize">{app.status}</span>
                   </Link>
                 </li>
               ) : null

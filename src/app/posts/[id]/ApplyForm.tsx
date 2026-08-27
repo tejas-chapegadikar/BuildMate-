@@ -9,14 +9,15 @@ export function ApplyForm({ postId }: { postId: string }) {
 
   if (state?.success) {
     return (
-      <p className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-300">
-        Application sent — you&apos;ll see their decision here.
+      <p className="card border-[color-mix(in_oklab,var(--accent-via)_35%,var(--border))] p-5 text-sm text-[var(--text-dim)]">
+        <span className="gradient-text font-medium">Application sent</span> — you&apos;ll
+        see their decision here.
       </p>
     );
   }
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form action={formAction} className="card space-y-3 p-5">
       <label htmlFor="message" className="text-sm font-medium">
         Apply for this
       </label>
@@ -26,14 +27,10 @@ export function ApplyForm({ postId }: { postId: string }) {
         rows={3}
         maxLength={500}
         placeholder="A line or two on why you're a fit (optional)"
-        className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+        className="field resize-none"
       />
-      {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-60"
-      >
+      {state?.error && <p className="text-sm text-[var(--danger)]">{state.error}</p>}
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Sending…" : "Apply"}
       </button>
     </form>

@@ -10,9 +10,9 @@ export default async function NewPostPage() {
   if (!user) redirect("/");
 
   return (
-    <div className="mx-auto w-full max-w-lg flex-1 px-6 py-10">
-      <h1 className="mb-1 text-lg font-semibold">Post a project</h1>
-      <p className="mb-6 text-sm text-neutral-500">
+    <div className="mx-auto w-full max-w-lg flex-1 px-6 py-12">
+      <h1 className="text-2xl font-semibold tracking-tight">Post a project</h1>
+      <p className="mt-1 mb-8 text-sm text-[var(--text-dim)]">
         Keep it short — just enough for the right person to recognize
         themselves.
       </p>

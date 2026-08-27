@@ -18,21 +18,23 @@ export default async function BrowsePage() {
     .returns<PostWithAuthor[]>();
 
   return (
-    <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Open projects</h1>
-        <Link
-          href="/posts/new"
-          className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-700"
-        >
-          Post a project
+    <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
+      <div className="mb-8 flex items-end justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Open projects</h1>
+          <p className="mt-1 text-sm text-[var(--text-dim)]">
+            {posts?.length ?? 0} project{posts?.length === 1 ? "" : "s"} looking for a partner
+          </p>
+        </div>
+        <Link href="/posts/new" className="btn-primary">
+          + Post a project
         </Link>
       </div>
 
       {!posts || posts.length === 0 ? (
-        <p className="text-sm text-neutral-500">
+        <p className="rounded-2xl border border-dashed border-[var(--border)] px-6 py-12 text-center text-sm text-[var(--text-dim)]">
           No open projects yet. Be the first to{" "}
-          <Link href="/posts/new" className="underline">
+          <Link href="/posts/new" className="gradient-text font-medium">
             post one
           </Link>
           .
@@ -41,26 +43,20 @@ export default async function BrowsePage() {
         <ul className="space-y-3">
           {posts.map((post) => (
             <li key={post.id}>
-              <Link
-                href={`/posts/${post.id}`}
-                className="block rounded-lg border border-neutral-200 p-4 hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
-              >
+              <Link href={`/posts/${post.id}`} className="card interactive block p-5">
                 <div className="flex items-center justify-between gap-4">
                   <h2 className="font-medium">{post.title}</h2>
-                  <span className="shrink-0 text-xs text-neutral-400">
-                    {post.author?.github_username ?? "unknown"}
+                  <span className="shrink-0 text-xs text-[var(--text-faint)]">
+                    @{post.author?.github_username ?? "unknown"}
                   </span>
                 </div>
-                <p className="mt-1 line-clamp-2 text-sm text-neutral-500">
+                <p className="mt-1.5 line-clamp-2 text-sm text-[var(--text-dim)]">
                   {post.pitch}
                 </p>
                 {post.looking_for.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                  <div className="mt-3.5 flex flex-wrap gap-1.5">
                     {post.looking_for.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
-                      >
+                      <span key={tag} className="chip">
                         {tag}
                       </span>
                     ))}

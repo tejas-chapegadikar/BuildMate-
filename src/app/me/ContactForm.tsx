@@ -12,13 +12,9 @@ export function ContactForm({ initialContact }: { initialContact: string | null 
         name="contact"
         defaultValue={initialContact ?? ""}
         placeholder="Email, Discord, or number to share once matched (optional)"
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+        className="field"
       />
-      <button
-        type="submit"
-        disabled={pending}
-        className="shrink-0 rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-600 hover:border-neutral-500 disabled:opacity-60 dark:border-neutral-700 dark:text-neutral-300"
-      >
+      <button type="submit" disabled={pending} className="btn-secondary shrink-0">
         {pending ? "Saving…" : state?.success ? "Saved" : "Save"}
       </button>
     </form>
