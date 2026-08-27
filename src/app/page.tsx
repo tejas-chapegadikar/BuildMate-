@@ -27,7 +27,8 @@ export default async function Home() {
 
           <div className="space-y-4">
             <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.05] tracking-tight fade-up fade-up-1">
-              Find your <span className="accent-text">co-builder</span>.
+              <span className="block">Find your</span>
+              <span className="accent-text block">co-builder.</span>
             </h1>
             <p className="mx-auto max-w-md text-balance text-sm leading-relaxed text-[var(--text-dim)] fade-up fade-up-2 sm:text-base lg:mx-0">
               Post what you&apos;re building and what you&apos;re missing.
