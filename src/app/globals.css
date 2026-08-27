@@ -1,24 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  /* Neutral, warm-tinted monochrome — no blue/violet/pink anywhere. */
-  --bg: #0b0b0a;
-  --surface: #141310;
-  --surface-2: #1c1a16;
-  --border: #2b2823;
-  --text: #f3f1e9;
-  --text-dim: #a5a196;
-  --text-faint: #6d6a60;
+  /* True black/white, Vercel-docs style — no color in the base palette. */
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface-2: #151515;
+  --border: #272727;
+  --text: #ededed;
+  --text-dim: #a1a1a1;
+  --text-faint: #6b6b6b;
 
-  /* One confident accent, used as a solid fill — not a gradient. */
-  --accent: #e0a53d;
-  --accent-strong: #f2bb5a;
-  --accent-ink: #211603; /* text color when sitting on --accent */
+  /* Primary actions are monochrome (white-on-black), not colored. */
+  --inverse-bg: #ededed;
+  --inverse-text: #0a0a0a;
+
+  /* Green is the *only* color in the system, spent deliberately in a few
+     places (logo mark, links, focus ring, one hero badge) — not a theme. */
+  --accent: #2fd058;
+  --accent-strong: #56e07d;
+  --accent-ink: #04170a;
 
   /* Muted, desaturated status colors — functional, not decorative. */
-  --ok: #8fae7a;
-  --warn: #d1a35a;
-  --danger: #c97361;
+  --ok: #3ecf60;
+  --warn: #c9a227;
+  --danger: #e5484d;
 
   /* Shell = the widest a page's outer wrapper gets. Safe within a 1440
      laptop viewport with room either side; content inside still uses
@@ -52,28 +57,13 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Ambient background: one quiet, low-opacity warm glow — restrained on
-   purpose. Fixed on ::before so it never affects layout or scroll. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(
-    38vw 30vh at 82% -6%,
-    color-mix(in oklab, var(--accent) 10%, transparent),
-    transparent
-  );
-}
-
 ::selection {
-  background: color-mix(in oklab, var(--accent) 55%, transparent);
-  color: var(--accent-ink);
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
+  color: var(--text);
 }
 
 * {
-  scrollbar-color: color-mix(in oklab, var(--accent) 35%, var(--surface-2)) transparent;
+  scrollbar-color: var(--border) transparent;
   scrollbar-width: thin;
 }
 ::-webkit-scrollbar {
@@ -81,7 +71,7 @@ body::before {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--accent) 35%, var(--surface-2));
+  background: var(--border);
   border-radius: 9999px;
   border: 2px solid var(--bg);
 }
@@ -123,16 +113,16 @@ body::before {
     justify-content: center;
     gap: 0.5rem;
     min-height: 2.75rem;
-    border-radius: 0.6rem;
+    border-radius: 0.5rem;
     padding: 0.7rem 1.4rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--accent-ink);
-    background: var(--accent);
+    color: var(--inverse-text);
+    background: var(--inverse-bg);
     transition: background-color 0.2s ease, transform 0.15s ease;
   }
   .btn-primary:hover {
-    background: var(--accent-strong);
+    background: #ffffff;
     transform: translateY(-1px);
   }
   .btn-primary:disabled {
@@ -146,17 +136,17 @@ body::before {
     justify-content: center;
     gap: 0.5rem;
     min-height: 2.75rem;
-    border-radius: 0.6rem;
+    border-radius: 0.5rem;
     padding: 0.65rem 1.3rem;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text);
-    background: var(--surface);
+    background: transparent;
     border: 1px solid var(--border);
     transition: border-color 0.2s ease, background 0.2s ease;
   }
   .btn-secondary:hover {
-    border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+    border-color: var(--text-faint);
     background: var(--surface-2);
   }
 
@@ -170,15 +160,15 @@ body::before {
   }
 
   .card {
-    border-radius: 0.85rem;
+    border-radius: 0.6rem;
     border: 1px solid var(--border);
     background: var(--surface);
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   a.card:hover,
   .card.interactive:hover {
-    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
-    box-shadow: 0 14px 32px -22px color-mix(in oklab, var(--accent) 35%, transparent);
+    border-color: var(--text-faint);
+    box-shadow: 0 14px 32px -22px rgb(0 0 0 / 0.6);
     transform: translateY(-2px);
   }
 
