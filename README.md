@@ -1,4 +1,4 @@
-# hackermatch
+# BuildMate
 
 Find a partner for the project you're building. Post what you're working on
 and what skill you're missing; applicants sign in with GitHub, so their

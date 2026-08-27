@@ -1,4 +1,4 @@
--- hackermatch database schema
+-- BuildMate database schema
 -- Run this in the Supabase SQL editor (or via `supabase db push`) once
 -- you've created a Supabase project and enabled the GitHub auth provider.
 

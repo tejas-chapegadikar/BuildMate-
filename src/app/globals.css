@@ -1,18 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #08080c;
-  --surface: #121218;
-  --surface-2: #17171f;
-  --border: #232330;
-  --text: #f5f5f7;
-  --text-dim: #9a9aa8;
-  --text-faint: #67677a;
-  --accent-from: #818cf8; /* indigo-400 */
-  --accent-via: #c084fc; /* purple-400 */
-  --accent-to: #f472b6; /* pink-400 */
-  --pop: #d9f99d; /* lime-200, sparing accent pop */
-  --danger: #fb7185;
+  /* Neutral, warm-tinted monochrome — no blue/violet/pink anywhere. */
+  --bg: #0b0b0a;
+  --surface: #141310;
+  --surface-2: #1c1a16;
+  --border: #2b2823;
+  --text: #f3f1e9;
+  --text-dim: #a5a196;
+  --text-faint: #6d6a60;
+
+  /* One confident accent, used as a solid fill — not a gradient. */
+  --accent: #e0a53d;
+  --accent-strong: #f2bb5a;
+  --accent-ink: #211603; /* text color when sitting on --accent */
+
+  /* Muted, desaturated status colors — functional, not decorative. */
+  --ok: #8fae7a;
+  --warn: #d1a35a;
+  --danger: #c97361;
+
+  /* Shell = the widest a page's outer wrapper gets. Safe within a 1440
+     laptop viewport with room either side; content inside still uses
+     its own (narrower) reading width where that matters. */
+  --shell: 1360px;
 }
 
 @theme inline {
@@ -23,45 +34,87 @@
   --color-text: var(--text);
   --color-text-dim: var(--text-dim);
   --color-text-faint: var(--text-faint);
-  --color-pop: var(--pop);
+  --color-accent: var(--accent);
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
-  background-image:
-    radial-gradient(60vw 40vh at 15% -10%, color-mix(in oklab, var(--accent-from) 18%, transparent), transparent),
-    radial-gradient(50vw 40vh at 110% 10%, color-mix(in oklab, var(--accent-to) 14%, transparent), transparent);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  position: relative;
+  overscroll-behavior-y: none;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Ambient background: one quiet, low-opacity warm glow — restrained on
+   purpose. Fixed on ::before so it never affects layout or scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    38vw 30vh at 82% -6%,
+    color-mix(in oklab, var(--accent) 10%, transparent),
+    transparent
+  );
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 55%, transparent);
+  color: var(--accent-ink);
+}
+
+* {
+  scrollbar-color: color-mix(in oklab, var(--accent) 35%, var(--surface-2)) transparent;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--accent) 35%, var(--surface-2));
+  border-radius: 9999px;
+  border: 2px solid var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up {
+    animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .fade-up-1 { animation-delay: 0.08s; }
+  .fade-up-2 { animation-delay: 0.16s; }
+  .fade-up-3 { animation-delay: 0.24s; }
 }
 
 @layer utilities {
-  .gradient-text {
-    background-image: linear-gradient(90deg, var(--accent-from), var(--accent-via), var(--accent-to));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
   }
 
-  .gradient-ring {
-    position: relative;
-  }
-  .gradient-ring::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--accent-from), var(--accent-via), var(--accent-to));
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0.6;
+  .accent-text {
+    color: var(--accent-strong);
   }
 
   .btn-primary {
@@ -69,19 +122,17 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 9999px;
+    min-height: 2.75rem;
+    border-radius: 0.6rem;
     padding: 0.7rem 1.4rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #0a0a0f;
-    background-image: linear-gradient(90deg, var(--accent-from), var(--accent-via), var(--accent-to));
-    background-size: 160% 100%;
-    background-position: 0% 0%;
-    transition: background-position 0.35s ease, transform 0.15s ease, box-shadow 0.25s ease;
-    box-shadow: 0 8px 30px -12px color-mix(in oklab, var(--accent-via) 70%, transparent);
+    color: var(--accent-ink);
+    background: var(--accent);
+    transition: background-color 0.2s ease, transform 0.15s ease;
   }
   .btn-primary:hover {
-    background-position: 100% 0%;
+    background: var(--accent-strong);
     transform: translateY(-1px);
   }
   .btn-primary:disabled {
@@ -94,7 +145,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 9999px;
+    min-height: 2.75rem;
+    border-radius: 0.6rem;
     padding: 0.65rem 1.3rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -104,7 +156,7 @@ body {
     transition: border-color 0.2s ease, background 0.2s ease;
   }
   .btn-secondary:hover {
-    border-color: color-mix(in oklab, var(--accent-via) 50%, var(--border));
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
     background: var(--surface-2);
   }
 
@@ -118,57 +170,76 @@ body {
   }
 
   .card {
-    border-radius: 1rem;
+    border-radius: 0.85rem;
     border: 1px solid var(--border);
-    background: color-mix(in oklab, var(--surface) 92%, transparent);
-    backdrop-filter: blur(6px);
+    background: var(--surface);
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   a.card:hover,
   .card.interactive:hover {
-    border-color: color-mix(in oklab, var(--accent-via) 45%, var(--border));
-    box-shadow: 0 16px 40px -24px color-mix(in oklab, var(--accent-via) 60%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    box-shadow: 0 14px 32px -22px color-mix(in oklab, var(--accent) 35%, transparent);
     transform: translateY(-2px);
   }
 
   .field {
     width: 100%;
-    border-radius: 0.75rem;
+    min-height: 2.75rem;
+    border-radius: 0.6rem;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
     padding: 0.65rem 0.9rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  @media (min-width: 640px) {
+    .field {
+      font-size: 0.875rem;
+    }
   }
   .field::placeholder {
     color: var(--text-faint);
   }
   .field:focus {
-    border-color: color-mix(in oklab, var(--accent-via) 60%, var(--border));
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-via) 22%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 55%, var(--border));
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent);
   }
 
   .chip {
     display: inline-flex;
     align-items: center;
-    border-radius: 9999px;
-    padding: 0.2rem 0.65rem;
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.6rem;
     font-size: 0.7rem;
     font-weight: 500;
-    background: color-mix(in oklab, var(--accent-via) 14%, var(--surface-2));
-    color: color-mix(in oklab, var(--accent-from) 55%, var(--text));
-    border: 1px solid color-mix(in oklab, var(--accent-via) 20%, var(--border));
+    background: var(--surface-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .chip-pop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    background: color-mix(in oklab, var(--accent) 12%, var(--surface-2));
+    color: var(--accent-strong);
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--border));
   }
 
   .badge-pending {
-    background: color-mix(in oklab, #fbbf24 18%, var(--surface-2));
-    color: #fcd34d;
+    background: color-mix(in oklab, var(--warn) 20%, var(--surface-2));
+    color: var(--warn);
   }
   .badge-accepted {
-    background: color-mix(in oklab, #34d399 18%, var(--surface-2));
-    color: #6ee7b7;
+    background: color-mix(in oklab, var(--ok) 20%, var(--surface-2));
+    color: var(--ok);
   }
   .badge-rejected {
     background: var(--surface-2);

@@ -9,15 +9,15 @@ export function ApplyForm({ postId }: { postId: string }) {
 
   if (state?.success) {
     return (
-      <p className="card border-[color-mix(in_oklab,var(--accent-via)_35%,var(--border))] p-5 text-sm text-[var(--text-dim)]">
-        <span className="gradient-text font-medium">Application sent</span> — you&apos;ll
+      <p className="card border-[color-mix(in_oklab,var(--accent)_35%,var(--border))] p-5 text-sm text-[var(--text-dim)]">
+        <span className="accent-text font-medium">Application sent</span> — you&apos;ll
         see their decision here.
       </p>
     );
   }
 
   return (
-    <form action={formAction} className="card space-y-3 p-5">
+    <form action={formAction} className="card space-y-3 p-4 sm:p-5">
       <label htmlFor="message" className="text-sm font-medium">
         Apply for this
       </label>

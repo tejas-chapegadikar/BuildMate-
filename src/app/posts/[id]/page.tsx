@@ -53,53 +53,63 @@ export default async function PostPage({
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
+    <div className="shell flex-1 px-4 py-8 sm:px-8 sm:py-12 lg:px-12">
       <Link href="/browse" className="btn-ghost">
         ← Back to open projects
       </Link>
 
-      <div className="mt-5 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">{post.title}</h1>
-          <p className="mt-1.5 text-sm text-[var(--text-dim)]">
-            Posted by{" "}
-            {post.author?.github_username ? (
-              <a
-                href={`https://github.com/${post.author.github_username}`}
-                target="_blank"
-                rel="noreferrer"
-                className="gradient-text font-medium"
-              >
-                @{post.author.github_username}
-              </a>
-            ) : (
-              "unknown"
-            )}
-          </p>
+      <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px] lg:gap-10">
+        <div className="lg:order-2">
+          <PostSummary post={post} />
         </div>
+
+        <div className="lg:order-1">
+          {isOwner ? (
+            <OwnerView post={post} applications={applications} />
+          ) : (
+            <ApplicantView postId={post.id} status={post.status} myApplication={myApplication} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PostSummary({ post }: { post: PostWithAuthor }) {
+  return (
+    <div className="card lg:sticky lg:top-24 p-5">
+      <div className="flex items-start justify-between gap-3">
+        <h1 className="text-lg font-semibold tracking-tight">{post.title}</h1>
         {post.status === "closed" && <span className="chip shrink-0">Closed</span>}
       </div>
+      <p className="mt-1.5 text-sm text-[var(--text-dim)]">
+        Posted by{" "}
+        {post.author?.github_username ? (
+          <a
+            href={`https://github.com/${post.author.github_username}`}
+            target="_blank"
+            rel="noreferrer"
+            className="accent-text font-medium"
+          >
+            @{post.author.github_username}
+          </a>
+        ) : (
+          "unknown"
+        )}
+      </p>
 
-      <p className="mt-6 whitespace-pre-wrap text-sm leading-relaxed text-[var(--text)]">
+      <p className="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-[var(--text)]">
         {post.pitch}
       </p>
 
       {post.looking_for.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-1.5">
+        <div className="mt-4 flex flex-wrap gap-1.5">
           {post.looking_for.map((tag) => (
             <span key={tag} className="chip">
               {tag}
             </span>
           ))}
         </div>
-      )}
-
-      <hr className="my-9 border-[var(--border)]" />
-
-      {isOwner ? (
-        <OwnerView post={post} applications={applications} />
-      ) : (
-        <ApplicantView postId={post.id} status={post.status} myApplication={myApplication} />
       )}
     </div>
   );
@@ -130,10 +140,10 @@ function OwnerView({
       {applications.length === 0 ? (
         <p className="text-sm text-[var(--text-dim)]">No applications yet.</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {applications.map((app) => (
             <li key={app.id} className="card p-5">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   {app.applicant?.avatar_url ? (
                     <Image

@@ -7,7 +7,7 @@ export function ContactForm({ initialContact }: { initialContact: string | null 
   const [state, formAction, pending] = useActionState(updateContact, undefined);
 
   return (
-    <form action={formAction} className="flex items-center gap-2">
+    <form action={formAction} className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <input
         name="contact"
         defaultValue={initialContact ?? ""}
