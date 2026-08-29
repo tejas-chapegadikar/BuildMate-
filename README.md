@@ -21,9 +21,19 @@ skills are backed by a real profile.
    `profiles`/`posts`/`applications` tables, row-level security policies,
    and a trigger that auto-creates a profile from GitHub metadata on
    sign-up.
-5. **Copy env vars**: `cp .env.local.example .env.local` and fill in your
+5. **Run the schema additions**: SQL Editor again, paste and run
+   [`supabase/schema_v2.sql`](supabase/schema_v2.sql) (after `schema.sql`
+   above). Adds the `bookmarks` table and a `get_counterpart_email`
+   function used for notification emails — it reads `auth.users` directly
+   so a real email address is never exposed through the regular
+   `profiles` table.
+6. **Copy env vars**: `cp .env.local.example .env.local` and fill in your
    project's URL and anon key (Supabase dashboard → Project Settings →
    API).
+7. **(Optional) Email notifications**: sign up at [resend.com](https://resend.com),
+   grab an API key, and set `RESEND_API_KEY` in `.env.local`. Without it,
+   notification emails are skipped (logged to the console) rather than
+   failing anything.
 
 Then:
 
@@ -49,3 +59,14 @@ Open [http://localhost:3000](http://localhost:3000).
   itself); an optional contact field (email/Discord/number) set on `/me`
   is also revealed once matched. There's no in-app chat by design — see
   `AGENTS.md`/project memory for the reasoning.
+- **Public profiles**: `/u/[username]` pulls live public GitHub data (bio,
+  top languages, recent repos) via `src/lib/github.ts`, plus that user's
+  posts on BuildMate. No token needed, cached for an hour.
+- **Search & filter**: `/browse` supports `?q=` (title/pitch text) and
+  `?tag=` (repeatable) via plain GET form params — shareable/bookmarkable
+  URLs, no client JS required for the filtering itself.
+- **Bookmarks**: save a project without applying yet (`src/app/actions/bookmarks.ts`),
+  visible under "Saved for later" on `/me`.
+- **Email notifications**: best-effort emails via Resend on new applicant
+  and on acceptance (`src/lib/email.ts`). Never blocks the action it's
+  attached to — a missing key or a Resend outage just skips the email.

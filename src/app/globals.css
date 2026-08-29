@@ -25,10 +25,11 @@
   --warn: #c9a227;
   --danger: #e5484d;
 
-  /* Shell = the widest a page's outer wrapper gets. Safe within a 1440
-     laptop viewport with room either side; content inside still uses
-     its own (narrower) reading width where that matters. */
-  --shell: 1360px;
+  /* Shell = the widest a page's outer wrapper gets. Fills a 1440–1920
+     laptop viewport almost edge to edge, capped short of the full 1920 so
+     it never stretches absurdly wide on bigger displays. Content inside
+     still uses its own (narrower) reading width where that matters. */
+  --shell: 1800px;
 }
 
 @theme inline {

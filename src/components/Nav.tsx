@@ -5,12 +5,15 @@ import type { Profile } from "@/lib/types";
 export function Nav({ profile }: { profile: Profile | null }) {
   return (
     <header className="sticky top-0 z-10 border-b border-white/5 bg-[var(--bg)]/80 backdrop-blur-md">
-      <div className="shell flex items-center justify-between px-4 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="grid size-6 place-items-center rounded-md bg-[var(--accent)] text-xs font-bold text-[var(--accent-ink)]">
+      <div className="shell flex items-center justify-between px-4 py-3.5 sm:px-6 sm:py-5 lg:px-10">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-base font-bold text-[var(--accent-ink)] sm:size-9">
             B
           </span>
-          <span className="text-sm font-semibold tracking-tight">BuildMate</span>
+          <span className="text-lg font-semibold tracking-tight sm:text-xl">BuildMate</span>
+          <span className="hidden rounded-full border border-[var(--border)] px-2 py-0.5 text-[0.65rem] font-medium tracking-wide text-[var(--text-faint)] uppercase sm:inline">
+            Beta
+          </span>
         </Link>
 
         {profile ? (

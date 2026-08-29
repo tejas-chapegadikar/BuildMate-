@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Application, Profile, PostWithAuthor } from "@/lib/types";
 import { closePost } from "@/app/actions/posts";
 import { updateApplicationStatus, withdrawApplication } from "@/app/actions/applications";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { ApplyForm } from "./ApplyForm";
 
 type ApplicationWithApplicant = Application & { applicant: Profile | null };
@@ -31,6 +32,13 @@ export default async function PostPage({
 
   const isOwner = post.author_id === user.id;
 
+  const { data: myBookmark } = await supabase
+    .from("bookmarks")
+    .select("id")
+    .eq("post_id", post.id)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
   let applications: ApplicationWithApplicant[] = [];
   let myApplication: Application | null = null;
 
@@ -53,14 +61,14 @@ export default async function PostPage({
   }
 
   return (
-    <div className="shell flex-1 px-4 py-8 sm:px-8 sm:py-12 lg:px-12">
+    <div className="shell flex-1 px-4 py-8 sm:px-6 sm:py-14 lg:px-10">
       <Link href="/browse" className="btn-ghost">
         ← Back to open projects
       </Link>
 
       <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px] lg:gap-10">
         <div className="lg:order-2">
-          <PostSummary post={post} />
+          <PostSummary post={post} showBookmark={!isOwner} isBookmarked={!!myBookmark} />
         </div>
 
         <div className="lg:order-1">
@@ -75,24 +83,32 @@ export default async function PostPage({
   );
 }
 
-function PostSummary({ post }: { post: PostWithAuthor }) {
+function PostSummary({
+  post,
+  showBookmark,
+  isBookmarked,
+}: {
+  post: PostWithAuthor;
+  showBookmark: boolean;
+  isBookmarked: boolean;
+}) {
   return (
-    <div className="card lg:sticky lg:top-24 p-5">
+    <div className="card lg:sticky lg:top-28 p-6">
       <div className="flex items-start justify-between gap-3">
-        <h1 className="text-lg font-semibold tracking-tight">{post.title}</h1>
-        {post.status === "closed" && <span className="chip shrink-0">Closed</span>}
+        <h1 className="text-xl font-semibold tracking-tight">{post.title}</h1>
+        <div className="flex shrink-0 items-center gap-2">
+          {post.status === "closed" && <span className="chip">Closed</span>}
+          {showBookmark && (
+            <BookmarkButton postId={post.id} isBookmarked={isBookmarked} />
+          )}
+        </div>
       </div>
       <p className="mt-1.5 text-sm text-[var(--text-dim)]">
         Posted by{" "}
         {post.author?.github_username ? (
-          <a
-            href={`https://github.com/${post.author.github_username}`}
-            target="_blank"
-            rel="noreferrer"
-            className="accent-text font-medium"
-          >
+          <Link href={`/u/${post.author.github_username}`} className="accent-text font-medium">
             @{post.author.github_username}
-          </a>
+          </Link>
         ) : (
           "unknown"
         )}
@@ -156,14 +172,12 @@ function OwnerView({
                   ) : (
                     <span className="size-[26px] rounded-full bg-[var(--surface-2)]" />
                   )}
-                  <a
-                    href={`https://github.com/${app.applicant?.github_username}`}
-                    target="_blank"
-                    rel="noreferrer"
+                  <Link
+                    href={`/u/${app.applicant?.github_username}`}
                     className="text-sm font-medium hover:underline"
                   >
                     @{app.applicant?.github_username}
-                  </a>
+                  </Link>
                 </div>
                 <StatusBadge status={app.status} />
               </div>

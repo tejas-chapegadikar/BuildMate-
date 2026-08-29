@@ -17,20 +17,20 @@ export default async function Home() {
   }
 
   return (
-    <div className="shell flex flex-1 flex-col justify-center gap-16 px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-0">
-      <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-        <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+    <div className="shell flex flex-1 flex-col justify-center gap-20 px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-0">
+      <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+        <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
           <span className="chip-pop fade-up">
             <span className="size-1.5 rounded-full bg-current" />
             for builders, not resumes
           </span>
 
-          <div className="space-y-4">
-            <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.05] tracking-tight fade-up fade-up-1">
+          <div className="space-y-5">
+            <h1 className="text-[clamp(2.75rem,6vw,5rem)] font-semibold leading-[1.02] tracking-tight fade-up fade-up-1">
               <span className="block">Find your</span>
               <span className="accent-text block">co-builder.</span>
             </h1>
-            <p className="mx-auto max-w-md text-balance text-sm leading-relaxed text-[var(--text-dim)] fade-up fade-up-2 sm:text-base lg:mx-0">
+            <p className="mx-auto max-w-md text-balance text-base leading-relaxed text-[var(--text-dim)] fade-up fade-up-2 sm:text-lg lg:mx-0">
               Post what you&apos;re building and what you&apos;re missing.
               Sign in with GitHub — no fluffed-up bios, just real code to
               back up the skills.
@@ -42,12 +42,12 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="fade-up fade-up-2 mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none">
+        <div className="fade-up fade-up-2 mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
           <PreviewCard />
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-4 fade-up fade-up-3 sm:grid-cols-3 sm:gap-5">
+      <div className="grid w-full grid-cols-1 gap-4 fade-up fade-up-3 sm:grid-cols-3 sm:gap-6">
         <Feature icon={<PostIcon />} title="Post the gap" body="One pitch, one skill you're missing. No 10-field form." />
         <Feature icon={<MatchIcon />} title="Real applicants" body="GitHub-verified — you see their actual repos, not a résumé." />
         <Feature icon={<HandshakeIcon />} title="You take it from there" body="Accept, then connect directly. No chat to manage, no noise." />
@@ -58,12 +58,12 @@ export default async function Home() {
 
 function Feature({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="card p-5 text-left">
-      <div className="mb-3 grid size-9 place-items-center rounded-lg bg-[var(--surface-2)] text-[var(--accent-strong)]">
+    <div className="card p-6 text-left">
+      <div className="mb-3.5 grid size-10 place-items-center rounded-lg bg-[var(--surface-2)] text-[var(--accent-strong)]">
         {icon}
       </div>
-      <h3 className="text-sm font-semibold">{title}</h3>
-      <p className="mt-1 text-xs leading-relaxed text-[var(--text-dim)]">{body}</p>
+      <h3 className="text-base font-semibold">{title}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-[var(--text-dim)]">{body}</p>
     </div>
   );
 }
