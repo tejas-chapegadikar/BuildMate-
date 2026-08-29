@@ -4,6 +4,7 @@ import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { SetupNotice } from "@/components/SetupNotice";
+import { RememberAccount } from "@/components/RememberAccount";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { Profile } from "@/lib/types";
@@ -56,6 +57,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {isSupabaseConfigured ? (
           <>
+            {profile?.github_username && (
+              <RememberAccount username={profile.github_username} avatarUrl={profile.avatar_url} />
+            )}
             <Nav profile={profile} />
             <main className="flex flex-1 flex-col">{children}</main>
             <Footer />

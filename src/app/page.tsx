@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { GitHubSignInButton } from "@/components/GitHubSignInButton";
+import { AccountChooser } from "@/components/AccountChooser";
 
 export default async function Home() {
   if (isSupabaseConfigured) {
@@ -37,8 +37,8 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="fade-up fade-up-3">
-            <GitHubSignInButton />
+          <div className="fade-up fade-up-3 flex w-full max-w-xs justify-center mx-auto lg:mx-0 lg:justify-start">
+            <AccountChooser />
           </div>
         </div>
 

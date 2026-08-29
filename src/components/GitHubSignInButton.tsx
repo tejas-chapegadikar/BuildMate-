@@ -3,24 +3,49 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function GitHubSignInButton({ className }: { className?: string }) {
+export function GitHubSignInButton({
+  className,
+  label,
+  suggestedLogin,
+  forcePicker,
+  hideIcon,
+}: {
+  className?: string;
+  /** Button text. Defaults to "Continue with GitHub". */
+  label?: string;
+  /** Pre-fills/suggests this GitHub username on GitHub's side (does not force it). */
+  suggestedLogin?: string;
+  /** Forces GitHub's account picker to appear, even with an active session. */
+  forcePicker?: boolean;
+  /** Suppress the generic GitHub mark — use when overlaying a real avatar instead. */
+  hideIcon?: boolean;
+}) {
   const [loading, setLoading] = useState(false);
 
   async function signIn() {
     setLoading(true);
     const supabase = createClient();
+
+    const queryParams: Record<string, string> = {};
+    if (forcePicker) {
+      queryParams.prompt = "select_account";
+    } else if (suggestedLogin) {
+      queryParams.login = suggestedLogin;
+    }
+
     await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
+        ...(Object.keys(queryParams).length ? { queryParams } : {}),
       },
     });
   }
 
   return (
     <button onClick={signIn} disabled={loading} className={className ?? "btn-primary"}>
-      <GitHubMark />
-      {loading ? "Redirecting…" : "Continue with GitHub"}
+      {!hideIcon && <GitHubMark />}
+      {loading ? "Redirecting…" : (label ?? "Continue with GitHub")}
     </button>
   );
 }
