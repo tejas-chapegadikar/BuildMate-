@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { BookmarkButton } from "@/components/BookmarkButton";
 import type { PostWithAuthor } from "@/lib/types";
 
 export default async function BrowsePage({
@@ -21,17 +20,12 @@ export default async function BrowsePage({
     (Array.isArray(tag) ? tag : tag ? [tag] : []).map((t) => t.toLowerCase())
   );
 
-  const [{ data: allPosts }, { data: myBookmarks }] = await Promise.all([
-    supabase
-      .from("posts")
-      .select("*, author:profiles(id, github_username, name, avatar_url)")
-      .eq("status", "open")
-      .order("created_at", { ascending: false })
-      .returns<PostWithAuthor[]>(),
-    supabase.from("bookmarks").select("post_id").eq("user_id", user.id),
-  ]);
-
-  const bookmarkedIds = new Set((myBookmarks ?? []).map((b) => b.post_id));
+  const { data: allPosts } = await supabase
+    .from("posts")
+    .select("*, author:profiles(id, github_username, name, avatar_url)")
+    .eq("status", "open")
+    .order("created_at", { ascending: false })
+    .returns<PostWithAuthor[]>();
 
   const availableTags = [...new Set((allPosts ?? []).flatMap((p) => p.looking_for))].sort(
     (a, b) => a.localeCompare(b)
@@ -130,22 +124,15 @@ export default async function BrowsePage({
               <p className="pointer-events-none mt-1.5 line-clamp-3 text-sm text-[var(--text-dim)]">
                 {post.pitch}
               </p>
-              <div className="mt-auto flex items-end justify-between gap-3 pt-3.5">
-                {post.looking_for.length > 0 && (
-                  <div className="pointer-events-none flex flex-wrap gap-1.5">
-                    {post.looking_for.map((tag) => (
-                      <span key={tag} className="chip">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <BookmarkButton
-                  postId={post.id}
-                  isBookmarked={bookmarkedIds.has(post.id)}
-                  className="relative z-10 ml-auto shrink-0"
-                />
-              </div>
+              {post.looking_for.length > 0 && (
+                <div className="pointer-events-none mt-auto flex flex-wrap gap-1.5 pt-3.5">
+                  {post.looking_for.map((tag) => (
+                    <span key={tag} className="chip">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>

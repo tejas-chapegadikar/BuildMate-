@@ -50,6 +50,21 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* The mobile layout reads well at the 16px browser default, but on a
+   laptop/desktop viewport the same rem-based type feels a touch small.
+   Nudge the root size up at wider breakpoints — everything sizes in rem,
+   so the whole UI scales proportionally. */
+@media (min-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+}
+@media (min-width: 1440px) {
+  html {
+    font-size: 18px;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--text);

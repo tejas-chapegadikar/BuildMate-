@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Profile } from "@/lib/types";
+import { SignOutButton } from "./SignOutButton";
 
 export function Nav({ profile }: { profile: Profile | null }) {
   return (
@@ -51,11 +52,7 @@ export function Nav({ profile }: { profile: Profile | null }) {
                 {profile.github_username ?? "You"}
               </span>
             </Link>
-            <form action="/auth/signout" method="post">
-              <button type="submit" className="rounded-full p-2 text-[var(--text-faint)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Sign out">
-                <SignOutIcon />
-              </button>
-            </form>
+            <SignOutButton />
           </nav>
         ) : null}
       </div>
@@ -76,15 +73,6 @@ function PlusIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}
-
-function SignOutIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-      <path d="M16 17l5-5-5-5M21 12H9" />
     </svg>
   );
 }
