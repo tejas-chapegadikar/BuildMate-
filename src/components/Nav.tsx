@@ -26,6 +26,13 @@ export function Nav({ profile }: { profile: Profile | null }) {
               <span className="hidden sm:inline">Browse</span>
             </Link>
             <Link
+              href="/people"
+              className="flex items-center gap-1.5 rounded-full px-2.5 py-2 text-sm text-[var(--text-dim)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)] sm:px-3"
+            >
+              <UsersIcon />
+              <span className="hidden sm:inline">People</span>
+            </Link>
+            <Link
               href="/posts/new"
               className="flex items-center gap-1.5 rounded-full px-2.5 py-2 text-sm text-[var(--text-dim)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)] sm:px-3"
             >
@@ -68,6 +75,17 @@ function CompassIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="9" />
       <path d="m14.5 9.5-2 5-5 2 2-5z" />
+    </svg>
+  );
+}
+
+function UsersIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 5 19.5V21" />
+      <circle cx="9.5" cy="8" r="3.25" />
+      <path d="M19 21v-1.5a3.5 3.5 0 0 0-2.5-3.36" />
+      <path d="M15 4.5a3.25 3.25 0 0 1 0 6.5" />
     </svg>
   );
 }

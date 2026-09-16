@@ -4,6 +4,7 @@ export type Profile = {
   name: string | null;
   avatar_url: string | null;
   contact: string | null;
+  skills: string[];
   created_at: string;
 };
 

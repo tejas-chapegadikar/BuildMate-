@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { fetchGitHubProfile } from "@/lib/github";
-import type { Post } from "@/lib/types";
+import type { Post, Profile } from "@/lib/types";
 
 export default async function PublicProfilePage({
   params,
@@ -18,7 +18,11 @@ export default async function PublicProfilePage({
   if (!user) redirect("/");
 
   const [{ data: profile }, github] = await Promise.all([
-    supabase.from("profiles").select("*").eq("github_username", username).maybeSingle(),
+    supabase
+      .from("profiles")
+      .select("*")
+      .eq("github_username", username)
+      .maybeSingle<Profile>(),
     fetchGitHubProfile(username),
   ]);
 
@@ -72,6 +76,21 @@ export default async function PublicProfilePage({
               <div>
                 <p className="font-semibold">{github.followers}</p>
                 <p className="text-xs text-[var(--text-faint)]">followers</p>
+              </div>
+            </div>
+          )}
+
+          {profile && profile.skills.length > 0 && (
+            <div className="mt-5 border-t border-[var(--border)] pt-4">
+              <p className="mb-2 text-xs font-medium tracking-wide text-[var(--text-faint)] uppercase">
+                Skills
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {profile.skills.map((skill) => (
+                  <span key={skill} className="chip">
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           )}

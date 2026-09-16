@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Post, Profile } from "@/lib/types";
 import { ContactForm } from "./ContactForm";
+import { SkillsForm } from "./SkillsForm";
 
 type MyApplication = {
   id: string;
@@ -64,14 +65,25 @@ export default async function MePage() {
       </div>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[320px_1fr]">
-        <section className="card h-fit p-5">
-          <h2 className="text-sm font-semibold text-[var(--text-dim)]">Contact info</h2>
-          <p className="mt-1 mb-3 text-xs text-[var(--text-faint)]">
-            Shown only to people whose application you accept, or who accept
-            yours.
-          </p>
-          <ContactForm initialContact={profile?.contact ?? null} />
-        </section>
+        <div className="space-y-5">
+          <section className="card h-fit p-5">
+            <h2 className="text-sm font-semibold text-[var(--text-dim)]">Contact info</h2>
+            <p className="mt-1 mb-3 text-xs text-[var(--text-faint)]">
+              Shown only to people whose application you accept, or who accept
+              yours.
+            </p>
+            <ContactForm initialContact={profile?.contact ?? null} />
+          </section>
+
+          <section className="card h-fit p-5">
+            <h2 className="text-sm font-semibold text-[var(--text-dim)]">Your skills</h2>
+            <p className="mt-1 mb-3 text-xs text-[var(--text-faint)]">
+              Comma-separated, up to 10. Shown on your public profile and in
+              the collaborator directory.
+            </p>
+            <SkillsForm initialSkills={profile?.skills ?? []} />
+          </section>
+        </div>
 
         <div className="space-y-12">
           <section>

@@ -27,10 +27,14 @@ skills are backed by a real profile.
    function used for notification emails — it reads `auth.users` directly
    so a real email address is never exposed through the regular
    `profiles` table.
-6. **Copy env vars**: `cp .env.local.example .env.local` and fill in your
+6. **Run the next schema addition**: SQL Editor again, paste and run
+   [`supabase/schema_v3.sql`](supabase/schema_v3.sql) (after `schema_v2.sql`
+   above). Adds a self-declared `skills text[]` column to `profiles`,
+   powering the `/people` collaborator directory.
+7. **Copy env vars**: `cp .env.local.example .env.local` and fill in your
    project's URL and anon key (Supabase dashboard → Project Settings →
    API).
-7. **(Optional) Email notifications**: sign up at [resend.com](https://resend.com),
+8. **(Optional) Email notifications**: sign up at [resend.com](https://resend.com),
    grab an API key, and set `RESEND_API_KEY` in `.env.local`. Without it,
    notification emails are skipped (logged to the console) rather than
    failing anything.
@@ -62,6 +66,11 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Public profiles**: `/u/[username]` pulls live public GitHub data (bio,
   top languages, recent repos) via `src/lib/github.ts`, plus that user's
   posts on BuildMate. No token needed, cached for an hour.
+- **Collaborator directory**: `/people` lists every profile, searchable via
+  `?q=` (name/username) and filterable by self-declared `?skill=`
+  (repeatable) — same GET-form pattern as `/browse`. Skills are edited on
+  `/me` and also shown on `/u/[username]`, separate from the live GitHub
+  `topLanguages`.
 - **Search & filter**: `/browse` supports `?q=` (title/pitch text) and
   `?tag=` (repeatable) via plain GET form params — shareable/bookmarkable
   URLs, no client JS required for the filtering itself.
