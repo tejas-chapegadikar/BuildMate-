@@ -24,6 +24,10 @@
   --ok: #3ecf60;
   --warn: #c9a227;
   --danger: #e5484d;
+  /* Fourth semantic tone, dashboard-only: neutral/informational stat tiles
+     (e.g. "applications sent") that aren't success/warn/danger. Same
+     desaturated register as the three above, not a decorative accent. */
+  --info: #6e8bf0;
 
   /* Shell = the widest a page's outer wrapper gets. Fills a 1440–1920
      laptop viewport almost edge to edge, capped short of the full 1920 so
@@ -250,5 +254,56 @@ body {
   .badge-rejected {
     background: var(--surface-2);
     color: var(--text-faint);
+  }
+
+  /* Dashboard stat tiles (/me). A tone sets the tile's ambient glow and
+     icon-chip color; the number itself always stays plain --text so the
+     tone reads as accent, not as the headline. */
+  .stat-tile {
+    border-radius: 0.85rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 1.3rem;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .stat-tile:hover {
+    border-color: var(--text-faint);
+    box-shadow: 0 14px 32px -22px rgb(0 0 0 / 0.6);
+    transform: translateY(-2px);
+  }
+  .stat-tile-value {
+    font-family: var(--font-mono);
+    font-size: 2.15rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text);
+  }
+  .stat-tile-icon {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+  }
+  .tone-accent {
+    background: radial-gradient(ellipse at top right, color-mix(in oklab, var(--accent) 9%, transparent), var(--surface) 65%);
+  }
+  .tone-accent .stat-tile-icon {
+    background: color-mix(in oklab, var(--accent) 14%, var(--surface-2));
+    color: var(--accent-strong);
+  }
+  .tone-warn {
+    background: radial-gradient(ellipse at top right, color-mix(in oklab, var(--warn) 9%, transparent), var(--surface) 65%);
+  }
+  .tone-warn .stat-tile-icon {
+    background: color-mix(in oklab, var(--warn) 16%, var(--surface-2));
+    color: color-mix(in oklab, var(--warn) 70%, white);
+  }
+  .tone-info {
+    background: radial-gradient(ellipse at top right, color-mix(in oklab, var(--info) 10%, transparent), var(--surface) 65%);
+  }
+  .tone-info .stat-tile-icon {
+    background: color-mix(in oklab, var(--info) 15%, var(--surface-2));
+    color: color-mix(in oklab, var(--info) 70%, white);
   }
 }

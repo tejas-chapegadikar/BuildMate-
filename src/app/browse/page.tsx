@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { PostWithAuthor } from "@/lib/types";
 
+type PostWithCount = PostWithAuthor & { applications: { count: number }[] };
+
 export default async function BrowsePage({
   searchParams,
 }: {
@@ -22,10 +24,10 @@ export default async function BrowsePage({
 
   const { data: allPosts } = await supabase
     .from("posts")
-    .select("*, author:profiles(id, github_username, name, avatar_url)")
+    .select("*, author:profiles(id, github_username, name, avatar_url), applications(count)")
     .eq("status", "open")
     .order("created_at", { ascending: false })
-    .returns<PostWithAuthor[]>();
+    .returns<PostWithCount[]>();
 
   const availableTags = [...new Set((allPosts ?? []).flatMap((p) => p.looking_for))].sort(
     (a, b) => a.localeCompare(b)
@@ -124,15 +126,19 @@ export default async function BrowsePage({
               <p className="pointer-events-none mt-1.5 line-clamp-3 text-sm text-[var(--text-dim)]">
                 {post.pitch}
               </p>
-              {post.looking_for.length > 0 && (
-                <div className="pointer-events-none mt-auto flex flex-wrap gap-1.5 pt-3.5">
+              <div className="pointer-events-none mt-auto flex items-center justify-between gap-3 pt-3.5">
+                <div className="flex flex-wrap gap-1.5">
                   {post.looking_for.map((tag) => (
                     <span key={tag} className="chip">
                       {tag}
                     </span>
                   ))}
                 </div>
-              )}
+                <span className="shrink-0 whitespace-nowrap text-[0.7rem] text-[var(--text-faint)]">
+                  {post.applications[0]?.count ?? 0} applicant
+                  {post.applications[0]?.count === 1 ? "" : "s"}
+                </span>
+              </div>
             </li>
           ))}
         </ul>

@@ -17,7 +17,15 @@ export default async function Home() {
   }
 
   return (
-    <div className="shell flex flex-1 flex-col justify-center gap-20 px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-0">
+    <div className="shell relative flex flex-1 flex-col justify-center gap-20 px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-0">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 right-[-12rem] -z-10 size-[46rem] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--accent) 16%, transparent) 0%, color-mix(in oklab, var(--accent) 5%, transparent) 45%, transparent 72%)",
+        }}
+      />
       <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
         <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
           <span className="chip-pop fade-up">
@@ -26,7 +34,7 @@ export default async function Home() {
           </span>
 
           <div className="space-y-5">
-            <h1 className="text-[clamp(2.75rem,6vw,5rem)] font-semibold leading-[1.02] tracking-tight fade-up fade-up-1">
+            <h1 className="text-[clamp(3rem,7vw,5.5rem)] font-bold leading-[1.0] tracking-tight fade-up fade-up-1">
               <span className="block">Find your</span>
               <span className="accent-text block">co-builder.</span>
             </h1>
