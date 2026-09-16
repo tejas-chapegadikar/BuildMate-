@@ -14,6 +14,8 @@ export function Footer() {
         <p className="text-xs text-[var(--text-faint)]">
           &copy; {new Date().getFullYear()} BuildMate. Built for people
           shipping something, not job hunting.
+          <span className="mx-1.5">&middot;</span>
+          A Tejas Chapegadikar Production
         </p>
       </div>
     </footer>

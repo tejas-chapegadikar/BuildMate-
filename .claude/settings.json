@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node \"C:\\\\Users\\\\Tejas\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\bundled-skills\\\\2.1.266\\\\b1dc82aef14911daf79d88cbeae15d07\\\\design\\\\seed-canvas.mjs\" --extract \"C:\\\\Users\\\\Tejas\\\\.claude\\\\projects\\\\c--TEJAS-MAIN-FOLDER--ALL----Roomy-Buildmate\\\\1b052518-32e2-4cd8-bc63-7c7bbd37c378\\\\tool-results\\\\artifact-33bfb738-1789544779-fadc.html\" --to \"C:\\\\Users\\\\Tejas\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--TEJAS-MAIN-FOLDER--ALL----Roomy-Buildmate\\\\1b052518-32e2-4cd8-bc63-7c7bbd37c378\\\\scratchpad\\\\buildmate-design\\\\verify-extract\")"
+    ]
+  }
+}

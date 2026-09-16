@@ -27,14 +27,20 @@ skills are backed by a real profile.
    function used for notification emails — it reads `auth.users` directly
    so a real email address is never exposed through the regular
    `profiles` table.
-6. **Run the next schema addition**: SQL Editor again, paste and run
-   [`supabase/schema_v3.sql`](supabase/schema_v3.sql) (after `schema_v2.sql`
-   above). Adds a self-declared `skills text[]` column to `profiles`,
-   powering the `/people` collaborator directory.
+6. **Run the next schema additions**: SQL Editor again, paste and run
+   [`supabase/schema_v3.sql`](supabase/schema_v3.sql) (adds a self-declared
+   `skills text[]` column to `profiles`, powering the `/people` collaborator
+   directory), then [`supabase/schema_v4.sql`](supabase/schema_v4.sql) (adds
+   indexes on the columns every page query filters/joins on — no behavior
+   change, just keeps things fast as usage grows).
 7. **Copy env vars**: `cp .env.local.example .env.local` and fill in your
    project's URL and anon key (Supabase dashboard → Project Settings →
    API).
-8. **(Optional) Email notifications**: sign up at [resend.com](https://resend.com),
+8. **(Optional) A GitHub token**: set `GITHUB_TOKEN` in `.env.local` (a
+   read-only classic token is enough) to raise `/u/[username]`'s GitHub API
+   rate limit from 60 req/hr — shared across every visitor — to 5,000
+   req/hr. Skip this early on; it matters once you have real traffic.
+9. **(Optional) Email notifications**: sign up at [resend.com](https://resend.com),
    grab an API key, and set `RESEND_API_KEY` in `.env.local`. Without it,
    notification emails are skipped (logged to the console) rather than
    failing anything.

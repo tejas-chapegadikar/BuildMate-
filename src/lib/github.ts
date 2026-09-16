@@ -35,15 +35,20 @@ export type GitHubProfileData = {
 };
 
 /**
- * Live public GitHub data for a username — no token needed, unauthenticated
- * rate limit (60 req/hr per server IP) is fine at this scale. Cached for an
- * hour via Next's fetch cache so a popular profile doesn't burn the budget.
+ * Live public GitHub data for a username. Unauthenticated rate limit is 60
+ * req/hr per server IP, shared across every visitor — fine for light usage,
+ * but set GITHUB_TOKEN to raise it to 5,000 req/hr as traffic grows. Cached
+ * for an hour via Next's fetch cache so a popular profile doesn't burn the
+ * budget either way.
  */
 export async function fetchGitHubProfile(username: string): Promise<GitHubProfileData | null> {
-  const headers = {
+  const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
     "User-Agent": "buildmate-app",
   };
+  if (process.env.GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
 
   const [userRes, reposRes] = await Promise.all([
     fetch(`https://api.github.com/users/${username}`, {

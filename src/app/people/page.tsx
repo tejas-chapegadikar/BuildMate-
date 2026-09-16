@@ -21,17 +21,22 @@ export default async function PeoplePage({
     (Array.isArray(skill) ? skill : skill ? [skill] : []).map((s) => s.toLowerCase())
   );
 
-  const { data: allProfiles } = await supabase
+  const { data: profilesRaw } = await supabase
     .from("profiles")
     .select("*")
     .order("github_username", { ascending: true })
     .returns<Profile[]>();
 
-  const availableSkills = [...new Set((allProfiles ?? []).flatMap((p) => p.skills))].sort(
-    (a, b) => a.localeCompare(b)
+  // `skills` defaults to null client-side if the schema_v3 migration hasn't
+  // run yet on this Supabase project — normalize so the rest of the page
+  // doesn't need to guard every access.
+  const allProfiles = (profilesRaw ?? []).map((p) => ({ ...p, skills: p.skills ?? [] }));
+
+  const availableSkills = [...new Set(allProfiles.flatMap((p) => p.skills))].sort((a, b) =>
+    a.localeCompare(b)
   );
 
-  const people = (allProfiles ?? [])
+  const people = allProfiles
     .filter((p) => p.github_username)
     .filter((person) => {
       const matchesQuery =
@@ -50,8 +55,8 @@ export default async function PeoplePage({
         <div>
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Find collaborators</h1>
           <p className="mt-1.5 text-sm text-[var(--text-dim)] sm:text-base">
-            {people.length} of {allProfiles?.length ?? 0} builder
-            {allProfiles?.length === 1 ? "" : "s"} on BuildMate
+            {people.length} of {allProfiles.length} builder
+            {allProfiles.length === 1 ? "" : "s"} on BuildMate
           </p>
         </div>
         <Link href="/me" className="btn-secondary w-full sm:w-auto">

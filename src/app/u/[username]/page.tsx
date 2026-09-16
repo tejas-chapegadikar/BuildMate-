@@ -80,7 +80,7 @@ export default async function PublicProfilePage({
             </div>
           )}
 
-          {profile && profile.skills.length > 0 && (
+          {profile && (profile.skills ?? []).length > 0 && (
             <div className="mt-5 border-t border-[var(--border)] pt-4">
               <p className="mb-2 text-xs font-medium tracking-wide text-[var(--text-faint)] uppercase">
                 Skills
